@@ -1,0 +1,86 @@
+#include <iostream>
+using namespace std;
+struct Tree {
+	int a[100];
+	int n;
+};
+void taoCayRong(Tree &t) {
+	for (int i = 0; i< 100; i++) {
+		t.a[i] = -1;
+	}
+}
+bool KtraRong(Tree t) {
+	if (t.a[0] == -1) {
+		return 1;
+	}
+	else
+		return 0;
+}
+void taoGoc(Tree& t, int x) {
+	if (KtraRong(t)) {
+		t.a[0] = x;
+		t.n = 1;
+	}
+	else {
+		cout << " khong them duoc";
+	}
+}
+void themNodeTrai(Tree& t, int i, int x) {
+	int LP = i * 2 + 1;
+	if (t.a[i] == -1) {
+		cout << " khong them duoc";
+	}
+	else {
+		t.a[LP] = x;
+	}
+}
+void themNodePhai(Tree& t, int i, int x) {
+	int RP = i * 2 + 2;
+	if (t.a[i] == -1) {
+		cout << "khong them duoc";
+	}
+	else {
+		t.a[RP] = x;
+	}
+}
+void duyetTruoc(Tree& t, int i) {
+	if (t.a[i] != -1 && i < 100) {
+		cout << t.a[i] << " ";
+		duyetTruoc(t, i * 2 + 1);
+		duyetTruoc(t, i * 2 + 2);
+	}
+}
+void duyetGiua(Tree& t, int i) {
+	if (t.a[i] != -1 && i < 100) {
+		duyetGiua(t, i * 2 + 1);
+		cout << t.a[i] << " ";
+		duyetGiua(t, i * 2 + 2);
+	}
+}
+void duyetSau(Tree& t, int i) {
+	if (i < 100 && t.a[i] != -1){
+		duyetSau(t, i * 2 + 1);
+		duyetSau(t, i * 2 + 2);
+		cout << t.a[i] << " ";
+	}
+}
+int main() {
+	Tree t;
+	taoCayRong(t);
+	taoGoc(t, 100);
+	themNodeTrai(t, 0, 5);
+	themNodePhai(t, 0, 10);
+	themNodeTrai(t, 1, 1024);
+	themNodePhai(t, 1, 99);
+	themNodeTrai(t, 2, 22);
+	themNodePhai(t, 2, 33);
+	KtraRong(t) ? cout << " cay rong\n" : cout << "cay khong rong\n";
+	cout << "duyet truoc:\n";
+	duyetTruoc(t, 0);
+	cout << "\nduyet giua: \n";
+	duyetGiua(t, 0);
+	cout << "\nduyet sau: \n";
+	duyetSau(t, 0);
+	return 0;
+	
+}
