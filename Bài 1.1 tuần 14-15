@@ -1,0 +1,72 @@
+#include <iostream>
+using namespace std;
+struct Node {
+	int data;
+	Node* left;
+	Node* right;
+};
+void taoCayRong(Node*& t) {
+	t = NULL;
+}
+Node* taoNode(int x) {
+	Node* p = new Node;
+	p->data = x;
+	p->left = NULL;
+	p->right = NULL;
+	return p;
+}
+void themNodeTrai(Node* t, int x) {
+	if (t == NULL || t->left != NULL) {
+		cout << "khong them duoc \n";
+	}
+	else {
+		t->left = taoNode(x);
+	}
+}void themNodePhai(Node* t, int x) {
+	if (t == NULL || t->right != NULL) {
+		cout << "khong them duoc \n";
+	}
+	else {
+		t->right = taoNode(x);
+	}
+}
+void duyetTruoc(Node* t) {
+	if (t != NULL) {
+		cout << t->data << " ";
+		duyetTruoc(t->left);
+		duyetTruoc(t->right);
+	}
+}
+void duyetGiua(Node* t) {
+	if (t != NULL) {
+		duyetGiua(t->left);
+		cout << t->data << " ";
+		duyetGiua(t->right);
+	}
+}
+void duyetSau(Node* t) {
+	if (t != NULL) {
+		duyetSau(t->left);
+		duyetSau(t->right);
+		cout << t->data << " ";
+	}
+}
+int main() {
+	Node* p = taoNode(4);
+	themNodeTrai(p, 1);
+	themNodePhai(p, 3);
+	themNodeTrai(p->left, 2);
+	themNodePhai(p->left, 16);
+	themNodeTrai(p->right, 9);
+	themNodePhai(p->right, 10);
+	themNodeTrai(p->left->left, 14);
+	themNodePhai(p->left->left, 8);
+	themNodeTrai(p->left->right, 7);
+	cout << "duyet truoc:\n";
+	duyetTruoc(p);
+	cout << "\n duyet giua: \n";
+	duyetGiua(p);
+	cout << "\n duyet sau: \n";
+	duyetSau(p);
+	return 0;
+}
