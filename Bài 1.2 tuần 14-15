@@ -12,7 +12,7 @@ void Heapsort(int a[], int n, int i) {
 	}
 	if (max != i) {
 		swap(a[max], a[i]);
-		Heap(a, n, max);
+		Heapsort(a, n, max);
 	}
 }
 void Duyettruoc(int a[], int n, int i) {
