@@ -1,0 +1,64 @@
+#include <iostream>
+using namespace std;
+struct Tree {
+	int a[100];
+	int n;
+};
+void taoCayRong(Tree& t) {
+	for (int i = 0; i < 100; i++) {
+		t.a[i] = -1;
+	}
+}
+bool KtraRong(Tree t) {
+	if (t.a[0] == -1) {
+		return 1;
+	}
+	else
+		return 0;
+}
+void taoGoc(Tree& t, int x) {
+	if (KtraRong(t)) {
+		t.a[0] = x;
+		t.n = 1;
+	}
+	else {
+		cout << " khong them duoc";
+	}
+}
+void themNodeTrai(Tree& t, int i, int x) {
+	int LP = i * 2 + 1;
+	if (t.a[i] == -1) {
+		cout << " khong them duoc";
+	}
+	else {
+		t.a[LP] = x;
+	}
+}
+void themNodePhai(Tree& t, int i, int x) {
+	int RP = i * 2 + 2;
+	if (t.a[i] == -1) {
+		cout << "khong them duoc";
+	}
+	else {
+		t.a[RP] = x;
+	}
+}
+bool sosanhcay(int a[], int b[], int i, int n) {
+	if (a[i] != b[i]) {
+		return false;
+	}
+	return (sosanhcay(a, b, 2 * i + 1, n) && sosanhcay(a, b, 2 * i + 2, n));
+}
+int main() {
+	Tree t;
+	int a[] = { 2,4,7,5,8,9,11,20,33,1 };
+	int b[] = { 2,4,7,5,8,9,11,20,33,2 };
+	int n = 10;
+	if (sosanhcay(a, b, 0, n)) {
+		cout << "Hai cay giong nhau";
+	}
+	else
+		cout << "Hai cay khac nhau";
+	return 0;
+
+}
