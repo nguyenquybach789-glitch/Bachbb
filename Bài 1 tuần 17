@@ -1,0 +1,98 @@
+
+#include <iostream>
+#include <vector>
+
+#include <string>
+
+using namespace std;
+
+struct Node {
+    string title;
+    int pages;
+    vector<Node*> muc_con;
+    Node(string t, int p) : title(t), pages(p) {}
+};
+int dem_chuong(Node* book) {
+    if (!book) return 0;
+    return book->muc_con.size();
+}
+int tong_trang(Node* node) {
+    if (!node) return 0;
+    int total = node->pages;
+    for (Node* child : node->muc_con) {
+        total += tong_trang(child);
+    }
+    return total;
+}
+Node* chuong_dai_nhat(Node* book) {
+    if (!book || book->muc_con.empty()) return nullptr;
+    Node* longest = nullptr;
+    int maxPages = -1;
+    for (Node* chapter : book->muc_con) {
+        int total = tong_trang(chapter);
+        if (total > maxPages) {
+            maxPages = total;
+            longest = chapter;
+        }
+    }
+    return longest;
+}
+bool xoa_muc(Node* parent, const string& target, int& soTrangBiXoa) {
+    for (auto it = parent->muc_con.begin(); it != parent->muc_con.end(); ++it) {
+        if ((*it)->title == target) {
+            soTrangBiXoa = tong_trang(*it);
+            delete* it;
+            parent->muc_con.erase(it);
+            return true;
+        }
+        if (xoa_muc(*it, target, soTrangBiXoa)) {
+            parent->pages -= soTrangBiXoa;
+            return true;
+        }
+    }
+    return false;
+}
+void in_de_muc_chuong(Node* book, const string& chapterTitle) {
+    for (Node* chapter : book->muc_con) {
+        if (chapter->title == chapterTitle) {
+            cout << "De muc cua " << chapterTitle << ":\n";
+            if (chapter->muc_con.empty()) {
+                cout << "- Khong co muc con\n";
+            }
+            else {
+                for (Node* section : chapter->muc_con) {
+                    cout << "+ " << section->title
+                        << " (" << section->pages << " trang)\n";
+                }
+            }
+            return;
+        }
+    }
+    cout << "Khong tim thay chuong: " << chapterTitle << endl;
+}
+int main() {
+    Node* book = new Node("cau truc du lieu va giai thuat", 0);
+    Node* c1 = new Node("Chuong 1: Co ban", 10);
+    Node* c2 = new Node("Chuong 2: Cau truc du lieu", 15);
+    Node* c3 = new Node("Chuong 3: Thuat toan", 20);
+    book->muc_con.push_back(c1);
+    book->muc_con.push_back(c2);
+    book->muc_con.push_back(c3);
+    c1->muc_con.push_back(new Node("1.1 Bien va Kieu du lieu", 5));
+    c1->muc_con.push_back(new Node("1.2 Vong lap", 8));
+    cout << "1. So chuong cua sach: " << dem_chuong(book) << endl;
+    Node* longest = chuong_dai_nhat(book);
+    if (longest)
+        cout << "2. Chuong dai nhat: " << longest->title << endl;
+    cout << "3. ";
+    in_de_muc_chuong(book, "Chuong 1: Co ban");
+    cout << "\n4. Dang xoa muc '1.1 Bien va Kieu du lieu'...\n";
+    int soTrangBiXoa = 0;
+    if (xoa_muc(book, "1.1 Bien va Kieu du lieu", soTrangBiXoa))
+        cout << "Da xoa muc (" << soTrangBiXoa << " trang)\n";
+    else
+        cout << "Khong tim thay muc can xoa\n";
+    cout << "\nSau khi xoa:\n";
+    in_de_muc_chuong(book, "Chuong 1: Co ban");
+    return 0;
+}
