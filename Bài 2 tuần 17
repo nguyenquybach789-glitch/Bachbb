@@ -1,0 +1,47 @@
+#include <iostream>
+using namespace std;
+struct Node {
+    int index;  
+    string tenmuc; 
+    Node* left;
+    Node* right;
+};
+bool sosanhsach(Node* t1, Node* t2) {
+    if (t1 == NULL && t2 == NULL) {
+        return true;
+    }
+    if (t1->index != t2->index || t1->tenmuc != t2->tenmuc) {
+        return false;
+    }
+    return (sosanhsach(t1->left, t2->left) && sosanhsach(t1->right, t2->right));
+}
+int main()
+{
+    Node* t1 = new Node();
+    Node* t2 = new Node();
+    t1->index = 1;
+    t1->tenmuc= "Chuong 1";
+    t1->left = new Node();
+    t1->left->index = 2;
+    t1->left->tenmuc = "1.1";
+    t1->right = new Node();
+    t1->right->index = 3;
+    t1->right->tenmuc = "1.2";
+
+    t2->index = 1;
+    t2->tenmuc = "Chuong 1";
+    t2->left = new Node();
+    t2->left->index = 2;
+    t2->left->tenmuc = "1.1";
+    t2->right = new Node();
+    t2->right->index = 3;
+    t2->right->tenmuc = "1.2";
+    if (sosanhsach(t1, t2))
+       cout << "2 sach giong nhau";
+    else 
+        cout << "2 sach khac nhau";
+
+    // Do phuc tap cua thuat toan: O(n)
+    return 0;
+
+}
